@@ -1,4 +1,3 @@
-import React from "react";
 import Searchbar from "./Searchbar";
 
 const Navbar = () => {
@@ -7,7 +6,7 @@ const Navbar = () => {
       <ul className="flex justify-around items-center py-6 px-40">
         <li className="flex">
           <img src="/Logo.svg" alt="logo" className="w-8 h-8" />
-          <p className="font-medium text-2xl">Sabziwala</p>
+          <p className="font-medium text-2xl">Sabjiwala</p>
         </li>
         <li>
           {/* search bar */}

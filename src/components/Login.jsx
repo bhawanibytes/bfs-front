@@ -1,0 +1,33 @@
+import React from 'react'
+import login_veg from '@/assets/smlogin.png'
+import sabjiwala_wordmark from '@/assets/sabjiwala_wordmark.png'
+
+const Login = () => {
+  return (
+    <div className='flex justify-center items-center h-screen'>
+      <div>
+        <img src={login_veg} alt="Laal Tamatar" className='absolute top-0 left-0' />
+        <form action="submit" method="post" className='mx-8 min-w-[19rem] flex flex-col items-center'>
+          <img src={sabjiwala_wordmark} alt="Welcome to Sabjiwala" className='max-w-40' />
+          <h3 className='mt-9 font-inria font-bold text-xl text-center'>Freshest Fruits & Veggies, <br /> Delivered to Your Doorstep!</h3>
+          <div className='mt-9 flex justify-center items-center'>
+            <hr className='border-t-2 min-w-14' />
+            <h4 className='font-inria font-normal text-base '>Log in or sign up</h4>
+            <hr className='border-t-2 min-w-14' />
+          </div>
+          <div className='min-w-56 min-h-10 mt-5  py-[10.5px] border-[#999999] border-[0.4px] rounded-[10px]'>
+            <div className='flex justify-center items-center'>
+              <p>+91</p>
+              <input type="number" name="" id="" placeholder='Enter Phone Number' className=' max-w-36 ml-3 placeholder:font-inria placeholder:font-normal placeholder:text-base' />
+
+            </div>
+          </div>
+          <button type="submit" className='mt-5 min-w-56 min-h-[3.13rem] bg-[#286C11] rounded-3xl text-white font-inria font-bold text-base'>Continue</button>
+        <p className='absolute bottom-10 max-w-52 text-[#999999] text-[0.8125rem] text-center '>By continuing, you agree to our Terms of Service Privacy Policy Content Policy</p>
+        </form>
+      </div>
+    </div>
+  )
+}
+
+export default Login

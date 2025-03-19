@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Contact from "./pages/Contact";
 import About from "./pages/About";
-import Login from "./pages/Login";
+import LoginPage from "./pages/LoginPage";
 import NotFound from "./pages/NotFound";
 import Register from "./pages/Register";
 import HeaderFooterLayout from "./layouts/HeaderFooterLayout";
@@ -14,7 +14,8 @@ const App = () => {
       <Route index element={<HeaderFooterLayout> <Home/> </HeaderFooterLayout>}/>
       <Route path="contact" element={<HeaderFooterLayout> <Contact/> </HeaderFooterLayout>} />
       <Route path="about" element={<HeaderFooterLayout> <About /> </HeaderFooterLayout>} />
-      <Route path="login" element={ <ClearLayout> <Login /> </ClearLayout> } />
+      <Route path="login-pc" element={ <ClearLayout> <LoginPage /> </ClearLayout> } />
+      <Route path="login" element={ <ClearLayout> <LoginPage /> </ClearLayout> } />
       <Route path="register" element={<HeaderFooterLayout> <Register /> </HeaderFooterLayout>} />
       <Route path="*" element={<HeaderFooterLayout> <NotFound/> </HeaderFooterLayout>} />
     </Routes>

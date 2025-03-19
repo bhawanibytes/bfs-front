@@ -4,12 +4,14 @@ import sabjiwala_wordmark from '@/assets/sabjiwala_wordmark.png'
 
 const LoginForm = () => {
   return (
+    //outer div
     <div className=' flex justify-center items-center h-screen bg-gray-200'>
-      <div className='max-w-[30rem] relative pt-40' >
-        <div className='flex justify-center items-center absolute bottom-[22rem] left-8 z-10'>
-          <img src={login_veg} alt="Veg" className='max-w-80 ' />
+
+      <div className='max-w-[37rem] relative pt-40' >
+        <div className='absolute bottom-[58%] left-[50%] -translate-x-1/2 -translate-y-10 z-10'>
+          <img src={login_veg} alt="Veg" className='max-w-[20rem]' />
         </div>
-        <div className='min-w-96 bg-white relative z-20 rounded-xl'>
+        <div className=' bg-white relative z-20 rounded-xl'>
           <div className='flex justify-center items-center p-3'>
             <img src={sabjiwala_wordmark} alt="" className='max-w-56' />
           </div>

@@ -17,7 +17,7 @@ const Login = () => {
       console.log('invalid phone number')
     }
   }
-  
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const phone = phoneRef.current.value
@@ -31,8 +31,11 @@ const Login = () => {
 
 
   return (
+     // div contains form and other element, dynamically view port height
     <div className='flex justify-center items-center h-dvh'>
+      {/* absolutely positioned to top left corner */}
       <img src={login_veg} alt="Laal Tamatar" className='absolute top-0 left-0' />
+      {/* form in center of top level div container with some margin as well*/}
       <form onSubmit={handleSubmit} autoComplete='on' className='mx-8 min-w-[19rem] flex flex-col items-center'>
         <img src={sabjiwala_wordmark} alt="Welcome to Sabjiwala" className='max-w-40' />
         <h3 className='mt-9 font-inria font-bold text-xl text-center'>Freshest Fruits & Veggies, <br /> Delivered to Your Doorstep!</h3>
@@ -48,9 +51,9 @@ const Login = () => {
           </div>
         </div>
         <button type="submit" className='mt-5 min-w-56 min-h-[3.13rem] bg-[#286C11] rounded-3xl text-white font-inria font-bold text-base'>Continue</button>
-        <p className='absolute bottom-10 max-w-52 text-[#999999] text-[0.8125rem] text-center '>By continuing, you agree to our Terms of Service Privacy Policy Content Policy</p>
       </form>
-
+      {/* diclaimer positioned absolutly, don't know how it is horizontally in middle  */}
+      <p className='absolute bottom-10 max-w-52 text-[#999999] text-[0.8125rem] text-center '>By continuing, you agree to our Terms of Service Privacy Policy Content Policy</p>
     </div>
   )
 }

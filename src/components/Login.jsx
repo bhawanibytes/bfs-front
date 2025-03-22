@@ -1,34 +1,34 @@
 import login_veg from '@/assets/smlogin.png'
 import sabjiwala_wordmark from '@/assets/sabjiwala_wordmark.png'
 import { useDispatch } from 'react-redux'
-import { setPhone } from '@/features/auth/authSlice'
+import { setPhone, setOtpSent } from '@/features/auth/authSlice'
 import { useRef } from 'react'
 
 const Login = () => {
   const dispatch = useDispatch()
   const phoneRef = useRef()
+  const regex = /^[1-9]\d{9}$/; // regex count 10 digit, only include first digit that is non-zero 
 
+  // handles changes to phone's input
   const handleChange = () => {
-    // regex count 10 digit, only include first digit that is non-zero 
-    const regex = /^[1-9]\d{9}$/;
+    // dispatch the phone's value to store if it is valid
     if (regex.test(phoneRef.current.value)) {
       dispatch(setPhone(phoneRef.current.value))
-    } else {
-      console.log('invalid phone number')
     }
   }
 
+  // handles continue button
   const handleSubmit = (e) => {
     e.preventDefault();
     const phone = phoneRef.current.value
     const regex = /^[1-9]\d{9}$/;
     if (regex.test(phone) && phone.length == 10) {
-      console.log(phone, 'from if')
+      dispatch(setOtpSent())
+      console.log(`otp is sent to ${phone}`)
     } else {
       console.log('invalid phone number from submit')
     }
   }
-
 
   return (
      // div contains form and other element, dynamically view port height

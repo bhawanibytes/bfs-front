@@ -7,6 +7,7 @@ module.exports = {
       fontFamily: {
         poppins: ['Poppins', 'sans-serif'],
         inria: ['Inria Sans', 'sans-serif'],
+        lato: ['Lato', 'san-serif']
       },
       borderRadius: {
         lg: "var(--radius)",

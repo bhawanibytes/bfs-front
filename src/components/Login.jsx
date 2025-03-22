@@ -23,7 +23,7 @@ const Login = () => {
     const phone = phoneRef.current.value
     const regex = /^[1-9]\d{9}$/;
     if (regex.test(phone) && phone.length == 10) {
-      dispatch(setOtpSent())
+      dispatch(setOtpSent(true))
       console.log(`otp is sent to ${phone}`)
     } else {
       console.log('invalid phone number from submit')

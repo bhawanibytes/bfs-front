@@ -3,7 +3,9 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   phone: "",
   otpSent: false,
-  otp: "",
+  otp: ['','','','','',''],
+  countdown: 60,
+  resendDisabled: true,
   otpVerified: false,
 };
 
@@ -14,11 +16,20 @@ const authSlice = createSlice({
     setPhone: (state, action) => {
       state.phone = action.payload; // ✅ Only updates phone
     },
-    setOtpSent: (state) => {
-        state.otpSent = true;
+    setOtpSent: (state, action ) => {
+        state.otpSent = action.payload;
     },
     setOtp: (state, action) => {
-      state.otp = action.payload; // ✅ Only updates otp
+        const {value, index, pastedOtp} = action.payload
+        !pastedOtp ? state.otp[index] = value : state.otp = pastedOtp// ✅ Only updates otp
+        console.log(!pastedOtp)
+        console.log(state.otp)
+    },
+    setCoutdown: (state, action) => {
+        state.countdown = action.payload;
+    },
+    setResendDisabled: (state, action) => {
+        state.resendDisabled = action.payload;
     },
     setOtpVerified: (state, action) => {
       state.otpVerified = action.payload; // ✅ Only updates otpVerified
@@ -26,5 +37,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { setPhone, setOtpSent, setOtp, setOtpVerified } = authSlice.actions;
+export const { setPhone, setOtpSent, setOtp, setCoutdown, setResendDisabled, setOtpVerified } = authSlice.actions;
 export default authSlice.reducer;

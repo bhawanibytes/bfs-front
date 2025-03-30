@@ -5,13 +5,13 @@ const userSchema = new mongoose.Schema(
   {
     user: {
       type: String,
-      required: true,
       trim: true,
     },
     mobile: {
       type: String,
       required: true,
       trim: true,
+      unique: true,
     },
     accountVerified: { type: Boolean, default: false },
     cartData: {

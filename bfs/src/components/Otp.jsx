@@ -5,6 +5,7 @@ import { ReactComponent as EditIcon } from '../assets/editIcon.svg'
 import { ReactComponent as Alert } from '../assets/alert.svg'
 import { setCoutdown, setOtp, setOtpSent, setResendDisabled } from '@/features/auth/authSlice'
 import { useRef, useEffect } from 'react'
+import { loginUser } from '@/services/axios'
 
 const Otp = () => {
     const dispatch = useDispatch()
@@ -52,6 +53,15 @@ const Otp = () => {
         });
         inputRefs.current[5]?.focus();
     }
+    const handleSubmit = async () => {
+        const mobile = '+91'+phone
+        const otp2 = otp.join('')
+        console.log(otp2)
+        const response = await loginUser({
+            mobile, otp: otp2
+        })
+        console.log(response)
+    }
     //
     return (
         //div contains otp form and other element, dynamically view port height
@@ -87,13 +97,13 @@ const Otp = () => {
                     :
                     <div className='flex justify-between mt-5'>
                         {!otp ?
-                            <></> : <div className=' min-w-[8.5rem] min-h-5 flex items-center font-lato font-normal text-sm text-[#E21931]' ><Alert className='mr-2'/> OTP is incorect :/</div>
+                            <></> : <div className=' min-w-[8.5rem] min-h-5 flex items-center font-lato font-normal text-sm text-[#E21931]' ><Alert className='mr-2' /> OTP is incorect :/</div>
                         }
                         <button className='font-inria font-normal text-sm min-w-[3.125rem] min-h-5 text-[#286C11 ]'>Resend</button>
                     </div>
                 }
             </div>
-            <button className='mt-[6.375rem] min-w-[18.75rem] min-h-[3.125rem] font-inria font-bold text-base text-[#286C11] border-[0.1rem] border-[#286C11] rounded-[1.5625rem]'>Verify</button>
+            <button onClick={handleSubmit} className='mt-[6.375rem] min-w-[18.75rem] min-h-[3.125rem] font-inria font-bold text-base text-[#286C11] border-[0.1rem] border-[#286C11] rounded-[1.5625rem]'>Verify</button>
 
         </div>
     )

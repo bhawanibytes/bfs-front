@@ -1,11 +1,115 @@
 const User = require("../models/userModel");
 const client = require("../config/twilio");
 
+// logic for dynamic login and signup
+const login2 = async (req, res) => {
+  try {
+    const { mobile } = req.body
+    if (!mobile) {
+      return res.status(400).json({
+        success: false,
+        message: "All fields are required",
+      });
+    }
+    const existingUser = await User.findOne({ mobile });
+    if (!existingUser) {
+      // creating user in db
+      const newUser = await User.create({ mobile });
+    }
+
+    // sending otp
+    await client.verify.v2
+      .services(process.env.TWILIO_VERIFY_SERVICE_SID)
+      .verifications.create({
+        to: mobile,
+        channel: "sms",
+      });
+
+    res.status(200).json({
+      success: true,
+      message: `OTP sent on ${mobile}`,
+    });
+
+  } catch (error) {
+    return res.status(500).json({
+      sucess: false,
+      message: error.message
+    })
+
+  }
+
+}
+
+// verifying dynamic login and signup through given otp
+const verifyLogin2 = async (req, res) => {
+  const { mobile, otp } = req.body;
+  const user = await User.findOne({ mobile });
+  if (!user) {
+    return res
+      .status(400)
+      .json({ success: false, message: "User not found" });
+  }
+  if (user.accountVerified) {
+    const verificationChecks = await client.verify.v2
+      .services(process.env.TWILIO_VERIFY_SERVICE_SID)
+      .verificationChecks.create({
+        to: mobile,
+        code: otp,
+      });
+
+    if (verificationChecks.status === "approved") {
+      const token = user.generateToken();
+      return res.status(200)
+        .cookie("token", token, {
+          expires: new Date(
+            Date.now() + process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000
+          ),
+          httpOnly: true,
+        })
+        .json({
+          success: true,
+          message: "Login successful",
+          token,
+        });
+
+    }
+  }
+  if (user.accountVerified === false) {
+    const verificationChecks = await client.verify.v2
+      .services(process.env.TWILIO_VERIFY_SERVICE_SID)
+      .verificationChecks.create({
+        to: mobile,
+        code: otp,
+      });
+
+    if (verificationChecks.status === "approved") {
+      user.accountVerified = true;
+      await user.save({ validateModifiedOnly: true });
+
+      const token = user.generateToken();
+      return res.status(200)
+        .cookie("token", token, {
+          expires: new Date(
+            Date.now() + process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000
+          ),
+          httpOnly: true,
+        })
+        .json({
+          success: true,
+          message: "Signup successful",
+          token,
+        });
+
+    }
+
+  }
+}
+
 // logic for user register
 const register = async (req, res) => {
   try {
     const { user, mobile } = req.body;
-    if (!user || !mobile) {
+    if (!mobile) {
       return res.status(400).json({
         success: false,
         message: "All fields are required",
@@ -14,12 +118,13 @@ const register = async (req, res) => {
     // need to write logic for validation for mobile number
 
     // checking if user already exists
-    const existingUser = await User.findOne({ mobile, accountVerified: true });
+    const existingUser = await User.findOne({ mobile });
     if (existingUser) {
-      return res.status(400).json({
-        success: false,
-        message: "Mobile number already registered, Please try to log in",
-      });
+      login()
+      // return res.status(400).json({
+      //   success: false,
+      //   message: "Mobile number already registered, Please try to log in",
+      // });
     }
 
     // creating user in db
@@ -39,7 +144,7 @@ const register = async (req, res) => {
       message: `OTP sent on ${mobile}`,
     });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ success: false, message: error.message, comError: error });
   }
 };
 
@@ -114,8 +219,8 @@ const verifyRegister = async (req, res) => {
 const login = async (req, res) => {
   try {
     const { mobile } = req.body;
-
-    const user = await User.findOne({ mobile, accountVerified: true });
+    console.log(mobile, "from login")
+    const user = await User.findOne({ mobile });
     if (!user) {
       return res.status(400).json({
         success: false,
@@ -130,7 +235,7 @@ const login = async (req, res) => {
         channel: "sms",
       });
 
-    res.status(200).json({ success: true, message: "OTP sent for login" });
+    res.status(200).json({ success: true, message: "OTP sent for login from login" });
   } catch (error) {
     res.status(500).json({
       error: error.message,
@@ -184,4 +289,6 @@ module.exports = {
   verifyRegister,
   login,
   verifyLogin,
-};
+  login2,
+  verifyLogin2
+}

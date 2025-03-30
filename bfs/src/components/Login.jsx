@@ -3,6 +3,7 @@ import sabjiwala_wordmark from '@/assets/sabjiwala_wordmark.png'
 import { useDispatch } from 'react-redux'
 import { setPhone, setOtpSent } from '@/features/auth/authSlice'
 import { useRef } from 'react'
+import { signupUser } from '@/services/axios'
 
 const Login = () => {
   const dispatch = useDispatch()
@@ -18,13 +19,19 @@ const Login = () => {
   }
 
   // handles continue button
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const phone = phoneRef.current.value
     const regex = /^[1-9]\d{9}$/;
     if (regex.test(phone) && phone.length == 10) {
-      dispatch(setOtpSent(true))
+      console.log(phone)
+      const phoneWithcode =  '+91'+ `${phone}`
+      const response = await signupUser({
+        mobile: phoneWithcode,
+      })
+      console.log(response, 'from reponse')
       console.log(`otp is sent to ${phone}`)
+      dispatch(setOtpSent(true))
     } else {
       console.log('invalid phone number from submit')
     }

@@ -3,10 +3,10 @@ import Otp from "@/components/Otp"
 import { useSelector } from "react-redux"
 
 const LoginPage = () => {
-  const otpSent = useSelector((state) => state.auth.otpSent)
+  const isOtpScreen = useSelector((state) => state.auth.isOtpScreen)
   return (
     <div>
-      {otpSent ? <Otp/> : <Login/> }
+      {isOtpScreen ? <Otp/> : <Login/> }
     </div>
   )
 }

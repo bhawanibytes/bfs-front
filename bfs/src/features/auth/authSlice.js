@@ -2,11 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   phone: "",
-  otpSent: false,
+  isOtpScreen: false,
   otp: ['','','','','',''],
   countdown: 60,
-  resendDisabled: true,
-  otpVerified: false,
+  isResendDisabled: true,
+  incorrectOtpWarning: false,
+  isVerifingLoader: false,
 };
 
 const authSlice = createSlice({
@@ -16,8 +17,8 @@ const authSlice = createSlice({
     setPhone: (state, action) => {
       state.phone = action.payload; // ✅ Only updates phone
     },
-    setOtpSent: (state, action ) => {
-        state.otpSent = action.payload;
+    setOtpScreen: (state, action ) => {
+        state.isOtpScreen = action.payload;
     },
     setOtp: (state, action) => {
         const {value, index, pastedOtp} = action.payload
@@ -25,17 +26,20 @@ const authSlice = createSlice({
         console.log(!pastedOtp)
         console.log(state.otp)
     },
-    setCoutdown: (state, action) => {
+    setCountdown: (state, action) => {
         state.countdown = action.payload;
     },
-    setResendDisabled: (state, action) => {
-        state.resendDisabled = action.payload;
+    setIsResendDisabled: (state, action) => {
+        state.isResendDisabled = action.payload;
     },
-    setOtpVerified: (state, action) => {
-      state.otpVerified = action.payload; // ✅ Only updates otpVerified
+    setIncorrectOtpWarning: (state, action) => {
+      state.incorrectOtpWarning = action.payload; // ✅ Only updates otpVerified
     },
+    setIsVerifingLoader: (state, action) => {
+      state.isVerifingLoader = action.payload
+    }
   },
 });
 
-export const { setPhone, setOtpSent, setOtp, setCoutdown, setResendDisabled, setOtpVerified } = authSlice.actions;
+export const { setPhone, setOtpScreen, setOtp, setCountdown, setIsResendDisabled, setIncorrectOtpWarning, setIsVerifingLoader} = authSlice.actions;
 export default authSlice.reducer;

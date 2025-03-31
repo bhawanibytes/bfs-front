@@ -1,7 +1,7 @@
 import login_veg from '@/assets/smlogin.png'
 import sabjiwala_wordmark from '@/assets/sabjiwala_wordmark.png'
 import { useDispatch } from 'react-redux'
-import { setPhone, setOtpSent } from '@/features/auth/authSlice'
+import { setPhone, setOtpScreen } from '@/features/auth/authSlice'
 import { useRef } from 'react'
 import { signupUser } from '@/services/axios'
 
@@ -31,7 +31,7 @@ const Login = () => {
       })
       console.log(response, 'from reponse')
       console.log(`otp is sent to ${phone}`)
-      dispatch(setOtpSent(true))
+      dispatch(setOtpScreen(true))
     } else {
       console.log('invalid phone number from submit')
     }

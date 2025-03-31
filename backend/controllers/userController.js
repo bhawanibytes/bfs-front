@@ -32,7 +32,7 @@ const login2 = async (req, res) => {
 
   } catch (error) {
     return res.status(500).json({
-      sucess: false,
+      success: false,
       message: error.message
     })
 
@@ -42,6 +42,7 @@ const login2 = async (req, res) => {
 
 // verifying dynamic login and signup through given otp
 const verifyLogin2 = async (req, res) => {
+  try{
   const { mobile, otp } = req.body;
   const user = await User.findOne({ mobile });
   if (!user) {
@@ -70,6 +71,14 @@ const verifyLogin2 = async (req, res) => {
           success: true,
           message: "Login successful",
           token,
+        });
+
+    }
+    if (verificationChecks.status === "pending") {
+      return res.status(200)
+        .json({
+          success: false,
+          message: "Otp is incorrect",
         });
 
     }
@@ -102,6 +111,13 @@ const verifyLogin2 = async (req, res) => {
 
     }
 
+  }}
+  catch(error){
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+      error
+    })
   }
 }
 

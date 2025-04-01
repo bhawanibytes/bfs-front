@@ -8,6 +8,7 @@ const adminRouter = require("./routes/adminRoute");
 const productRouter = require("./routes/productRoute");
 const cartRouter = require("./routes/cartRoute");
 const orderRouter = require("./routes/orderRoute");
+const cookieParser = require("cookie-parser");
 
 // app configs
 const app = express();
@@ -17,8 +18,13 @@ connectCloudinary();
 
 //middlewares
 app.use(express.json());
-app.use(cors());
-
+app.use(cors(
+  {
+    origin: process.env.CORS_FRONTEND,
+    credentials: true,
+  }
+));
+app.use(cookieParser())
 // api endpoints
 app.use("/api/user", userRouter);
 app.use("/api/product", productRouter);

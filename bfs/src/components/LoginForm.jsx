@@ -1,4 +1,4 @@
-import React from 'react'
+// import React from 'react'
 import login_veg from '@/assets/login_veg.png'
 import sabjiwala_wordmark from '@/assets/sabjiwala_wordmark.png'
 

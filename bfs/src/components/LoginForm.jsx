@@ -1,43 +1,102 @@
-// import React from 'react'
-import login_veg from '@/assets/login_veg.png'
-import sabjiwala_wordmark from '@/assets/sabjiwala_wordmark.png'
+import login_veg from "@/assets/smlogin.png";
+import sabjiwala_wordmark from "@/assets/sabjiwala_wordmark.png";
+import { useDispatch } from "react-redux";
+import { setPhone, setOtpScreen } from "@/features/auth/authSlice";
+import { useRef } from "react";
+import { signupUser } from "@/services/axios";
 
 const LoginForm = () => {
+  const dispatch = useDispatch();
+  const phoneRef = useRef();
+  const regex = /^[1-9]\d{9}$/; // regex count 10 digit, only include first digit that is non-zero
+
+  // handles changes to phone's input
+  const handleChange = () => {
+    // dispatch the phone's value to store if it is valid
+    if (regex.test(phoneRef.current.value)) {
+      dispatch(setPhone(phoneRef.current.value));
+    }
+  };
+
+  // handles continue button
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const phone = phoneRef.current.value;
+    const regex = /^[1-9]\d{9}$/;
+    if (regex.test(phone) && phone.length == 10) {
+      console.log(phone);
+      const phoneWithcode = "+91" + `${phone}`;
+      const response = await signupUser({
+        mobile: phoneWithcode,
+      });
+      console.log(response, "from reponse");
+      console.log(`otp is sent to ${phone}`);
+      dispatch(setOtpScreen(true));
+    } else {
+      console.log("invalid phone number from submit");
+    }
+  };
+
   return (
-    //outer div
-    <div className=' flex justify-center items-center h-screen bg-gray-200'>
-
-      <div className='max-w-[37rem] relative pt-40' >
-        <div className='absolute bottom-[58%] left-[50%] -translate-x-1/2 -translate-y-10 z-10'>
-          <img src={login_veg} alt="Veg" className='max-w-[20rem]' />
+    // div contains form and other element, dynamically view port height
+    <div className='flex justify-center items-center h-dvh'>
+      {/* absolutely positioned to top left corner */}
+      <img
+        src={login_veg}
+        alt='Laal Tamatar'
+        className='absolute top-0 left-0'
+      />
+      {/* form in center of top level div container with some margin as well*/}
+      <form
+        onSubmit={handleSubmit}
+        autoComplete='on'
+        className='mx-8 min-w-[19rem] flex flex-col items-center'
+      >
+        <img
+          src={sabjiwala_wordmark}
+          alt='Welcome to Sabjiwala'
+          className='max-w-40'
+        />
+        <h3 className='mt-9 font-inria font-bold text-xl text-center'>
+          Freshest Fruits & Veggies, <br /> Delivered to Your Doorstep!
+        </h3>
+        <div className='mt-9 flex justify-center items-center'>
+          <hr className='border-t-2 min-w-14' />
+          <h4 className='font-inria font-normal text-base '>
+            Log in or sign up
+          </h4>
+          <hr className='border-t-2 min-w-14' />
         </div>
-        <div className=' bg-white relative z-20 rounded-xl'>
-          <div className='flex justify-center items-center p-3'>
-            <img src={sabjiwala_wordmark} alt="" className='max-w-56' />
-          </div>
-          <hr className='w-full border-t border-gray-300' />
-          <div className=' font-inria font-bold text-2xl text-center py-5'>
-            Freshest Fruits & Veggies,<br /> Delivered to Your Doorstep!
-          </div>
-          <div className='flex justify-center items-center '>
-            <hr className='w-1/3 border-t border-gray-300' /><h3 className='min-w-36'>Log in or sign up</h3><hr className='w-1/3 border-t border-gray-300' />
-          </div>
-          <form action="submit" method="post" className='flex flex-col'>
-            <div className='min-w-48 my-8 mx-auto flex justify-center border-gray-300 border-2 rounded-sm py-2 text-lg'>
-              <select name="" id="country-code" className='outline-none appearance-none'>
-                <option value="india">+91</option>
-              </select>
-              <input type="number" name="" id="" placeholder=' 9876543210' minLength={10} className=' max-w-28 outline-none' />
-            </div>
-            <button type="submit" className='min-w-48 bg-green-800 mx-auto text-xl text-white rounded-xl py-2 mb-8' >Continue</button>
-          </form>
-          <div className=' text-center pb-10'>
-            Need Help?
+        <div className='min-w-56 min-h-10 mt-5  py-[10.5px] border-[#999999] border-[0.4px] rounded-[10px]'>
+          <div className='flex justify-center items-center'>
+            <p>+91</p>
+            <input
+              type='number'
+              name='phone'
+              id='phone'
+              ref={phoneRef}
+              placeholder='Enter Phone Number'
+              onChange={handleChange}
+              maxLength={10}
+              minLength={3}
+              className=' max-w-36 ml-3 placeholder:font-inria placeholder:font-normal placeholder:text-base'
+            />
           </div>
         </div>
-      </div>
+        <button
+          type='submit'
+          className='mt-5 min-w-56 min-h-[3.13rem] bg-[#286C11] rounded-3xl text-white font-inria font-bold text-base'
+        >
+          Continue
+        </button>
+      </form>
+      {/* diclaimer positioned absolutly, don't know how it is horizontally in middle  */}
+      <p className='absolute bottom-10 max-w-52 text-[#999999] text-[0.8125rem] text-center '>
+        By continuing, you agree to our Terms of Service Privacy Policy Content
+        Policy
+      </p>
     </div>
-  )
-}
+  );
+};
 
-export default LoginForm
+export default LoginForm;
